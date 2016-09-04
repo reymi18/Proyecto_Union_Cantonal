@@ -1,0 +1,41 @@
+DROP PROCEDURE IF EXISTS mostrar_clientes;
+CREATE PROCEDURE mostrar_clientes()
+SELECT * FROM CLIENTE;
+
+use asociaciones;
+DROP PROCEDURE IF EXISTS insertar_Asociacion;
+DELIMITER //
+CREATE PROCEDURE insertar_Asociacion(nombreAso varchar(50), direccion VARCHAR(200), correo VARCHAR(50),telefono varchar(20),clave varchar(10),foto_perfil varchar(100))
+COMMENT 'Procedimiento que inserta un cliente a la base de datos'
+BEGIN
+IF NOT EXISTS ( SELECT a.id_asociacion
+FROM asociacion  AS a
+WHERE a.nombre = TRIM(nombreAso)) THEN
+INSERT INTO asociacion(nombre,direccion,correo,telefono,clave,foto_perfil)
+VALUES (nombreAso,direccion,correo,telefono,clave,foto_perfil);
+ELSE
+SELECT 'Esta asociacion ya existe en la base de datos!';
+END IF;
+END//
+
+DELIMITER ;
+
+call insertar_Asociacion ("Pato","mundo","","","1234","");
+
+
+------------------------------------------------------------------------------------
+
+
+
+
+use asociaciones;
+DROP PROCEDURE IF EXISTS obtener_Asociacion;
+DELIMITER //
+CREATE PROCEDURE obtener_Asociacion()
+COMMENT 'Procedimiento que busca asociaciones'
+BEGIN
+select *id_asociacion from asociacion;
+END//
+DELIMITER ;
+
+call obtener_Asociacion ();
